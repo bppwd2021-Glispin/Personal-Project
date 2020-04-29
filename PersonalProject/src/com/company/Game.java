@@ -18,7 +18,7 @@ public abstract class Game implements KeyListener, MouseListener
     {
         this.game = (MyGame)this;
         running = true;
-        frame = new JFrame("Mattio Party");
+        frame = new JFrame("Strategy Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gamePanel = new GamePanel();
         frame.getContentPane().add(BorderLayout.CENTER, gamePanel);
@@ -29,6 +29,8 @@ public abstract class Game implements KeyListener, MouseListener
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.addKeyListener(this);
         frame.addMouseListener(this);
+        Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(3,3,BufferedImage.TYPE_INT_ARGB),new Point(0,0),"blank cursor");
+        frame.getContentPane().setCursor(blankCursor);
         run();
     }
 
