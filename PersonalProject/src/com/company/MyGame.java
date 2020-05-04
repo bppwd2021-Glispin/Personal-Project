@@ -14,8 +14,10 @@ public class MyGame extends Game  {
 
     private static final int SCREEN_WIDTH = 1920;
     private static final int SCREEN_HEIGHT = 1080;
+    static int framerate = 60;
 
     static int mousex, mousey;
+    static Font baseFont;
     static Board board;
     static Player player;
 
@@ -32,13 +34,16 @@ public class MyGame extends Game  {
     public void update() {
         PointerInfo a = MouseInfo.getPointerInfo();
         Point b = a.getLocation();
-        mousex = (int) b.getX()-10;
+        mousex = (int) b.getX();
         mousey = (int) b.getY()-20;
         board.update();
         player.update();
     }
 
     public void draw(Graphics pen) {
+        Color trueBlack = new Color(0,0,0);
+        pen.setColor(trueBlack);
+        baseFont = pen.getFont();
         board.draw(pen);
         player.draw(pen);
     }
@@ -47,7 +52,19 @@ public class MyGame extends Game  {
     public void keyTyped(KeyEvent ke) {}
 
     @Override
-    public void keyPressed(KeyEvent ke) { }
+    public void keyPressed(KeyEvent ke) {
+        switch (ke.getKeyCode()){
+            case(KeyEvent.VK_T):
+                MyGame.player.GUI.tileMode=!MyGame.player.GUI.tileMode;
+                break;
+            case(KeyEvent.VK_I):
+                MyGame.player.GUI.invOpen=!MyGame.player.GUI.invOpen;
+                break;
+            case(KeyEvent.VK_B):
+                MyGame.player.GUI.buildMode=!MyGame.player.GUI.buildMode;
+                break;
+        }
+    }
 
     @Override
     public void keyReleased(KeyEvent ke) { }

@@ -1,0 +1,2 @@
+Grass,Stone,Sand
+100-Money,10-Wood,20-Stone
