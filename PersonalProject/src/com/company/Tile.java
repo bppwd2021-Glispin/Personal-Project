@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Tile {
@@ -15,6 +16,7 @@ public class Tile {
     BufferedImage img;
     int offsetx, offsety;
     String type;
+    Building building = null;
 
     public Tile(String type, int index, int offsetx, int offsety){
         if(type.equals("Water")){
@@ -46,6 +48,12 @@ public class Tile {
         this.offsety=offsety;
     }
 
+    public void update(int basex, int basey){
+        if(building!=null) {
+            building.update(basex, basey);
+        }
+    }
+
     public void draw(Graphics pen, int basex, int basey){
         pen.drawImage(img,basex+offsetx,basey+offsety,50,50 ,null);
     }
@@ -65,6 +73,11 @@ public class Tile {
         }
         pen.drawImage(otherTopBorder.get(index),basex+offsetx,basey+offsety-6,50,12,null);
     }
+
+    public void drawBuilding(Graphics pen, int basex, int basey){
+        building.draw(pen,basex,basey);
+    }
+
 
     public void outline(Graphics pen, int basex, int basey){
         pen.drawImage(MyGame.board.tileOutline,basex+offsetx,basey+offsety,50,50,null);

@@ -61,7 +61,13 @@ public class MyGame extends Game  {
                 MyGame.player.GUI.invOpen=!MyGame.player.GUI.invOpen;
                 break;
             case(KeyEvent.VK_B):
-                MyGame.player.GUI.buildMode=!MyGame.player.GUI.buildMode;
+                if(player.GUI.selectedBuild!=null){
+                    player.GUI.selectedBuild = null;
+                    player.GUI.selectedBuildTile = null;
+                }
+                else {
+                    MyGame.player.GUI.buildMode = !MyGame.player.GUI.buildMode;
+                }
                 break;
         }
     }

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 public class Player {
 
-    BufferedImage cursor, pointingCur, grabCur;
     UI GUI;
     boolean m1, m2;
     int cash;
@@ -17,33 +16,17 @@ public class Player {
     ArrayList<Resource> inventory = new ArrayList<>();
 
     public Player(){
-        try {
-            this.pointingCur = ImageIO.read(new File("Images\\Mouse\\Pointer.png"));
-            this.grabCur = ImageIO.read(new File("Images\\Mouse\\Grab.png"));
-        }
-        catch(IOException e){
-            System.out.println(e);
-        }
         inventory.add(new Resource("Wood"));
-        inventory.add(new Resource("Stone"));
-        inventoryStack.add(10);
-        inventoryStack.add(20);
+        inventoryStack.add(55);
         GUI = new UI();
-        cash=100;
+        cash=300;
     }
 
     public void update(){
         GUI.update();
-        if(m2){
-            cursor=grabCur;
-        }
-        else{
-            cursor=pointingCur;
-        }
     }
 
     public void draw(Graphics pen){
         GUI.draw(pen);
-        pen.drawImage(cursor,MyGame.mousex-10,MyGame.mousey,null);
     }
 }

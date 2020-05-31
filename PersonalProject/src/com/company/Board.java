@@ -16,7 +16,7 @@ public class Board {
 
     ArrayList<ArrayList<Tile>> grid = new ArrayList();
     BufferedImage tileOutline;
-    int width, height, basex, basey, lastMousex, lastMousey;
+    int width, height, basex, basey, lastMousex, lastMousey, minX, maxX;
 
     public Board(int width, int height){
         try {
@@ -71,12 +71,33 @@ public class Board {
             basey+=MyGame.mousey-lastMousey;
             lastMousex=MyGame.mousex;
             lastMousey=MyGame.mousey;
+            MyGame.player.GUI.highlightBuilding=null;
+        }
+        if(MyGame.player.GUI.highlightBuilding!=null){
+            if(basex+MyGame.player.GUI.highlightBuilding.offsetx+25>958 && basex+MyGame.player.GUI.highlightBuilding.offsetx+25<962){
+                basex=960-MyGame.player.GUI.highlightBuilding.offsetx-25;
+            }
+            else{
+                basex+=(960-basex-MyGame.player.GUI.highlightBuilding.offsetx-25)/5;
+            }
+            if(basey+MyGame.player.GUI.highlightBuilding.offsety+25>538 && basey+MyGame.player.GUI.highlightBuilding.offsety+25<542){
+                basey=540-MyGame.player.GUI.highlightBuilding.offsety-25;
+            }
+            else{
+                basey+=(540-basey-MyGame.player.GUI.highlightBuilding.offsety-25)/5;
+            }
+
+        }
+        for(ArrayList<Tile> row:grid){
+            for(Tile col:row){
+                col.update(basex,basey);
+            }
         }
     }
 
     public void draw(Graphics pen){
-        int minX = 0;
-        int maxX = -1;
+        minX = 0;
+        maxX = -1;
         boolean leave = false;
         for(int i=0;i<grid.size();i++){
             for(int j=minX;j<grid.get(i).size();j++){
@@ -102,36 +123,34 @@ public class Board {
                 if(i-1>0 && !grid.get(i).get(j).type.equals(grid.get(i-1).get(j).type)){
                     grid.get(i).get(j).borderUp(pen, basex, basey, grid.get(i-1).get(j).type);
                 }
+                if(grid.get(i).get(j).building!=null){
+                    grid.get(i).get(j).drawBuilding(pen,basex,basey);
+                }
             }
             if(leave){
                 break;
             }
         }
-        leave = false;
-        if(MyGame.player.GUI.tileMode) {
-            for (int i = 0; i < grid.size(); i++) {
-                for (int j = minX; j < grid.get(i).size(); j++) {
-                    if (basey + grid.get(i).get(j).offsety < -50) {
-                        break;
-                    }
-                    if (basex + grid.get(i).get(j).offsetx < -50) {
-                        minX = j + 1;
-                        continue;
-                    }
-                    if (basey + grid.get(i).get(j).offsety > 1080) {
-                        leave = true;
-                        break;
-                    }
-                    if (maxX == j || basex + grid.get(i).get(j).offsetx > 1920) {
-                        maxX = j;
-                        break;
-                    }
-                    grid.get(i).get(j).outline(pen, basex, basey);
-                }
-                if (leave) {
+    }
+
+    public void drawOutline(Graphics pen){
+        boolean leave = false;
+        for (int i = 0; i < grid.size(); i++) {
+            for (int j = minX; j < grid.get(i).size(); j++) {
+                if (basey + grid.get(i).get(j).offsety > 1080) {
+                    leave = true;
                     break;
                 }
+                if (maxX == j || basex + grid.get(i).get(j).offsetx > 1920) {
+                    maxX = j;
+                    break;
+                }
+                grid.get(i).get(j).outline(pen, basex, basey);
+            }
+            if (leave) {
+                break;
             }
         }
     }
+
 }
